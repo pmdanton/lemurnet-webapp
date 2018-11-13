@@ -1,0 +1,241 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="How to clean a dataset of images.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>LemurNet: obtaining a dataset</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-color--primary">
+            <div class="mdl-layout__header-row">
+                <h3>LemurNet</h3>
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
+                <a class="mdl-layout__tab is-active" id="blog_menu">Blog</a>
+                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="blog_menu">
+                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_downloading_dataset', _external=True) }}' ">
+                        Obtaining a Dataset </li>
+                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_cleaning_dataset', _external=True) }}' ">
+                        Cleaning the Dataset </li>
+                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_training', _external=True) }}' ">
+                        Training the Network</li>
+                </ul>
+            </div>
+        </header>
+        <div class="demo-ribbon"></div>
+        <main class="demo-main mdl-layout__content">
+            <div class="demo-container mdl-grid">
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                    <div class="demo-crumbs mdl-color-text--grey-500">
+                        LemurNet &gt; Blog &gt; Cleaning the Dataset
+                    </div>
+                    <h2>Cleaning the Dataset</h2>
+                    <h3>The problem of outliers</h3>
+                    <p>
+                        A common problem with images you get online is that you will often see incorrectly labeled, or
+                        even
+                        completely irrelevant, data: these points are <a href="https://en.wikipedia.org/wiki/Outlier"
+                            target="_blank">outliers</a>
+                        to our problem.
+                        Here are some examples of the pictures downloaded for <a href="https://en.wikipedia.org/wiki/Red_lemur"
+                            target="_blank">eulemur rufus</a> ; some represent other
+                        species (in this case, <a href="https://en.wikipedia.org/wiki/Red_ruffed_lemur" target="_blank">varecia
+                            rubra</a>), some
+                        don't show lemurs at all!
+                    </p>
+                    <p>
+                        <img src="../static/eulemur rufus.361.jpg" height="224" width="224"></img>
+                        <img src="../static/eulemur rufus.216.jpg" height="224" width="224"></img>
+                    </p>
+                    <p>
+                        As mentioned before[link to previous post], most online tutorials use well-established and
+                        clean datasets
+                        like MNIST or CIFAR 10. Some get more creative like a Pikachu detector or Alien vs Predator
+                        classifier, but
+                        are typically limited to binary problems with a few hundred samples, so removing outliers by
+                        hand is a
+                        no-brainer. While you could manually go through the 15k+ images (in my case) of the lemur
+                        dataset, it would
+                        take a considerable amount of time for a not-so-rewarding task. Also, this manual process
+                        wouldn't scale
+                        with a much larger dataset, e.g. for the 1.2 million pictures in ImageNet.
+                    </p>
+                    <p>
+                        The problem of <a href="https://en.wikipedia.org/wiki/Anomaly_detection" target="_blank">detecting
+                            outliers</a>
+                        has been extensively researched in Statistics;
+                        the <a href="https://scikit-learn.org/stable/modules/outlier_detection.html" target="_blank">scikit-learn
+                            documentation</a> shows interesting comparisons between a number of techniques. When
+                        applying any such algorithm to images, we need to be aware that the natural representation in
+                        terms of
+                        pixels is not suitable: it suffers the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality"
+                            target="_blank">curse of dimensionality</a> with over 150k dimensions for
+                        224x224, 3-channel images. It also carries little visual structure, in the sense that you can
+                        make two
+                        identical images extremely distant (for the Euclidean distance) by changing just a few pixels,
+                        while a human’s
+                        understanding of the picture would not be affected.
+
+                    </p>
+                    <p>
+                        The natural way to filter noise, reduce dimension, and make each dimension “meaningful” is by
+                        performing
+                        feature extraction, and the best feature extractors for pictures are currently
+                        <a href="http://cs231n.github.io/convolutional-networks/" target="_blank">convolutional
+                            networks</a>. In
+                        such networks, the first layers extract basic features like edges and corners,
+                        while subsequent, deeper layers can extract abstract concepts and complex patterns. Removing
+                        the top layer
+                        of a convolutional classifier will transform an image into a 1D tensor (a vector) than
+                        constitutes the
+                        features of the image.
+                    </p>
+                    <h3>Feature extraction with Keras</h3>
+                    <p>
+                        We will present our results in a pandas dataframe. First we obtain basic information about all
+                        our images,
+                        like path, species, genus, family:
+                        <script src="https://gist.github.com/pmdanton/e02f557bf456fc66f816e927914ce039.js"></script>
+                    </p>
+                    <p>
+                        For the implementation of convolutional networks, we turn to the excellent Keras API in Python,
+                        which
+                        conveniently ships the pre-trained MobileNetV2, among others networks (you can adapt this
+                        tutorial to
+                        InceptionV3 or ResNet50 with minimal code change, but MobileNetV2 is faster). We load the
+                        pre-trained
+                        MobileNetV2 model from Keras, without the top layer (softmax classifier), so the output is a 1D
+                        tensor of
+                        size 1024, that we understand as 1024 high-level features.
+                        <script src="https://gist.github.com/pmdanton/e439dcb921244e317a78934335bb2af5.js"></script>
+                    </p>
+                    <p>
+                        We then extract the features for all our images. To go over the entire dataset, we use the
+                        Sequence class
+                        defined in keras.utils, a worthy alternative to generators safe for multiprocessing.
+                        <script src="https://gist.github.com/pmdanton/c6ff2694b36bb2174e7e7b2cf5a985d6.js"></script>
+                        We make sure that we're not missing any image when choosing the batch size, and we add the
+                        features to our dataframe:
+                        <script src="https://gist.github.com/pmdanton/cf86afc20bf91ffb9af7f872d14e9c86.js"></script>
+                    </p>
+                    <h3>Low-dimensional embeddings with tSNE</h3>
+                    <p>
+                        At this stage we have extracted meaningful features, but 1024 dimensions is still very large
+                        and likely to affect the performance of our outlier detection algorithm. A good way to reduce
+                        the dimension of our problem is to use <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding"
+                            target="_blank">t-distributed stochastic neighbors embedding</a>, aka
+                        tSNE. Because tSNE tries to preserve the local structure of points, like clusters of
+                        correct images, outliers in the original space are likely to remain outliers in the embeddings.
+                        Using 2D tSNE embeddings will also allow us to <a href="https://distill.pub/2016/misread-tsne/"
+                            target="_blank">visualize</a> our features, which is always a good way to gain insight to
+                        your data. We use the excellent scikit-learn implementation of tSNE.
+                        <script src="https://gist.github.com/pmdanton/f01f64ab597caba708ad2851dd074909.js"></script>
+                    </p>
+                    <p>
+                        Here's a visualisation of our embeddings, where the colors represent the five families of
+                        lemurs:
+                        <script src="https://gist.github.com/pmdanton/b2f0e0e9c8690ba5f8d48aabb5dd844e.js"></script>
+                        <p>
+                            <img src="{{ url_for('static', filename='tSNE.png') }}" height="570" width="664"></img>
+                        </p>
+                        We already see a number of outliers, lying in the wrong clusters! Crucially, won't build one
+                        outlier detector for the entire dataset, but one species at a time. To understand why, consider
+                        a picture of <i>lemur catta</i> incorrectly located in the <i>varecia variegata</i>
+                        folder/cluster: if we only check outliers for varecia variegata, it will stand out, but if we
+                        use the entire dataset including lemur catta pictures, it won't be different from legitimate
+                        images.
+                    </p>
+                    <h3>Detecting the outliers </h3>
+                    <p>
+                        One of the most effective algorithms to detect outliers is called Isolation Forests. I won't
+                        detail
+                        the theory here, but the main idea is that outliers are isolated points, in the sense that
+                        they are more likely to be alone in any random partition of the distribution space.
+                        Equivalently,
+                        successive random "splits" of the space will isolate them faster than points within a cluster:
+                        this
+                        number of splits is a measure of isolation. For more information, the seminal paper is easy to
+                        read
+                        and accessible <a href="https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/icdm08b.pdf"
+                            target="_blank">here</a>.
+                    </p>
+                    <p>
+                        Scikit-learn has us covered with isolation forests:
+                        <script src="https://gist.github.com/pmdanton/e0450228a62961535feb84832e186ca5.js"></script>
+                        Outliers will receive a value of -1, inliers a value of +1. Below is the result for the indri
+                        indri.
+                    </p>
+                    <p>
+                        <script src="https://gist.github.com/pmdanton/4b06852ca25b3ad23a5b13e5ea79e39b.js"></script>
+                        <img src="{{ url_for('static', filename='indri_outliers.png') }}"></img>
+                    </p>
+                    <p>
+                        Note that, for this problem, <a href="https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope"
+                            target="_blank">elliptic envelope</a> is also a good choice of algorithm since each species
+                        is expected to lie in exactly one (hopefully Gaussian) cluster. We can now remove the outliers:
+                        <script src="https://gist.github.com/pmdanton/957c3608a4ceada7446bf67a63fd17cd.js"></script>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="How to obtain a dataset from online images.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>LemurNet: obtaining a dataset</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css" /> 
+    <link rel="stylesheet" href="../static/styles_blog.css">
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+      <header class="demo-header mdl-layout__header mdl-layout__header--scroll mdl-color--primary mdl-color-text--white">
+        <div class="mdl-layout__header-row mdl-shadow--4dp">
+          <span class="mdl-layout-title"><h3>LemurNet Blog</span>
+      </header>
+      <div class="demo-ribbon"></div>
+      <main class="demo-main mdl-layout__content">
+        <div class="demo-container mdl-grid">
+          <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+          <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+            <div class="demo-crumbs mdl-color-text--grey-500">
+              LemurNet &gt; Blog &gt; Obtaining a Dataset
+            </div>
+            <h2>Obtaining a Dataset</h2>
+              <h3> What they don't tell you about datasets </h3>
+              <p>
+                Most tutorials on deep learning assume that you either already have a clean, labelled dataset, like MNIST or CIFAR10, or just focus on the algorithms and use synthetic (random) data for convenience. 
+</p><p>
+In real life, obtaining a dataset is one of the first tasks of any machine learning pipeline, right after defining your goals and success metrics. In many cases it remains a manual process that can prove tedious, especially as deep learning typically requires many samples. 
+</p><p>
+For our lemur classifier, we need images of lemurs, but what lemurs, and how do we get them? 
+</p><p>
+Defining what categories or classes you need can sometimes be obvious (in the well-known dog vs cat example, it's pretty clear you need pictures of dogs and, well, cats). For my lemur project, I need to consider some domain knowledge: there are 5 families of lemur, 15 genera, and 101 species documented in the third edition of the reference book <a href="https://www.amazon.com/Lemurs-Madagascar-3rd-Russell-Mittermeier/dp/1934151238/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1541626320&sr=8-3" target="_blank"><i>Lemurs of Madagascar</i></a>. Classification at family or genus level is probably too sparse, and at species level too coarse; in particular rare species may have very few pictures available online. 
+</p><p>
+Therefore, I followed the rather informal process of checking Google Images for each species, to quickly figure out if there was enough data, and I came out with a list of 35 categories:
+<script src="https://gist.github.com/pmdanton/a0bae57d2b23d2b5eee36a283c8d25a4.js"></script>
+</p><p>
+As you can see, for some genera all species are grouped under one class. Note that we are using scientific names rather than common names, in the hope to get the most accurate information when searching online. 
+              </p>
+              <p>
+<h3>Downloading images from Google</h3>
+We will download the images from Google Images, using a script called <a href="https://github.com/hardikvasa/google-images-download" target="_blank">google-images-download</a>. To install if, you first need to obtain chromedriver. On Ubuntu, this is done with:
+
+	<script src="https://gist.github.com/pmdanton/2dd5272bb5cdae6a30225fd3e82fb541.js"></script>
+              </p>
+              <p>
+                Given a list of keywords (our 35 classes), the script will create a series of folders named after these keywords, and fill them with relevant pictures. For convenience, we store our classes names in the text file called “taxa.txt” seen above, with one class per line. 
+              </p>
+              <p>
+                We chose the following arguments for the script, that are stored in a json file called “config.json”:
+                <script src="https://gist.github.com/pmdanton/387de05b636f83ec78e0417950da0135.js"></script>
+              </p>
+              <p>
+                You can tweak these params as you like, e.g. to get more picture; they should be pretty self-explanatory and you can refer to the <a href="https://github.com/hardikvasa/google-images-download/blob/master/README.rst" target="_blank">documentation</a>. We then run the script in the terminal:
+                <script src="https://gist.github.com/pmdanton/bb7237072cb7b4815baf985775878087.js"></script>
+
+Be patient! It may take several hours to complete, depending on the number of images you're downloading. From time to time you'll notice that some images fail, so you will likely end up with fewer images per class than specified in the json config, and different classes may not have the same number of images. Overall it should be fairly balanced, and you can always re-run a specific class if needed. 
+              </p>
+              <p>
+Downloading the images in a good step, but a quick look at your data may reveal an unpleasant surprise: downloaded pictures are noisy, e.g. incorrectly labelled, and the dataset needs a good cleanup! This will be the second post of this project. 
+</p>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>

@@ -4,9 +4,26 @@ from flask_sslify import SSLify
 app = Flask(__name__)
 sslify = SSLify(app, permanent=True)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
-if(__name__ == "__main__"):
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/blog_downloading_dataset/")
+def blog_downloading_dataset():
+    return render_template("blog_downloading_dataset.html")
+
+
+@app.route("/blog_cleaning_dataset/")
+def blog_cleaning_dataset():
+    return render_template("blog_cleaning_dataset.html")
+
+
+@app.route("/blog_training/")
+def blog_training():
+    return render_template("blog_training.html")
+
+
+if __name__ == "__main__":
     app.run()
