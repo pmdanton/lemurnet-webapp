@@ -22,7 +22,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="How to clean a dataset of images.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>LemurNet: obtaining a dataset</title>
+    <title>LemurNet: Cleaning the Dataset</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,7 +30,7 @@
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <meta name="apple-mobile-web-app-title" content="LemurNet">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -64,7 +64,7 @@
             <div class="mdl-layout__header-row">
                 <h3>LemurNet</h3>
             </div>
-            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark mdl-layout--fixed-header">
                 <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
                 <a class="mdl-layout__tab is-active" id="blog_menu">Blog</a>
                 <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="blog_menu">
@@ -100,11 +100,11 @@
                         don't show lemurs at all!
                     </p>
                     <p>
-                        <img src="../static/eulemur rufus.361.jpg" height="224" width="224"></img>
-                        <img src="../static/eulemur rufus.216.jpg" height="224" width="224"></img>
+                        <img src="{{ url_for('static', filename='eulemur rufus.361.jpg') }}" height="224" width="224"></img>
+                        <img src="{{ url_for('static', filename='eulemur rufus.216.jpg') }}" height="224" width="224"></img>
                     </p>
                     <p>
-                        As mentioned before[link to previous post], most online tutorials use well-established and
+                        As mentioned <a href="{{ url_for('blog_downloading_dataset', _external=True) }}" target="_blank">before</a>, most online tutorials use well-established and
                         clean datasets
                         like MNIST or CIFAR 10. Some get more creative like a Pikachu detector or Alien vs Predator
                         classifier, but
