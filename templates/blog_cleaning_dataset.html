@@ -64,17 +64,9 @@
             <div class="mdl-layout__header-row">
                 <h3>LemurNet</h3>
             </div>
-            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark mdl-layout--fixed-header">
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
                 <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
-                <a class="mdl-layout__tab is-active" id="blog_menu">Blog</a>
-                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="blog_menu">
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_downloading_dataset', _external=True) }}' ">
-                        Obtaining a Dataset </li>
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_cleaning_dataset', _external=True) }}' ">
-                        Cleaning the Dataset </li>
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_training', _external=True) }}' ">
-                        Training the Network</li>
-                </ul>
+                <a href="{{ url_for('blog', _external=True) }}" class="mdl-layout__tab">Blog</a>
             </div>
         </header>
         <div class="demo-ribbon"></div>
@@ -104,7 +96,8 @@
                         <img src="{{ url_for('static', filename='eulemur rufus.216.jpg') }}" height="224" width="224"></img>
                     </p>
                     <p>
-                        As mentioned <a href="{{ url_for('blog_downloading_dataset', _external=True) }}" target="_blank">before</a>, most online tutorials use well-established and
+                        As mentioned <a href="{{ url_for('blog_downloading_dataset', _external=True) }}" target="_blank">before</a>,
+                        most online tutorials use well-established and
                         clean datasets
                         like MNIST or CIFAR 10. Some get more creative like a Pikachu detector or Alien vs Predator
                         classifier, but
@@ -162,7 +155,7 @@
                         pre-trained
                         MobileNetV2 model from Keras, without the top layer (softmax classifier), so the output is a 1D
                         tensor of
-                        size 1024, that we understand as 1024 high-level features.
+                        size 1280, that we understand as 1280 high-level features.
                         <script src="https://gist.github.com/pmdanton/e439dcb921244e317a78934335bb2af5.js"></script>
                     </p>
                     <p>
@@ -176,7 +169,7 @@
                     </p>
                     <h3>Low-dimensional embeddings with tSNE</h3>
                     <p>
-                        At this stage we have extracted meaningful features, but 1024 dimensions is still very large
+                        At this stage we have extracted meaningful features, but 1280 dimensions is still very large
                         and likely to affect the performance of our outlier detection algorithm. A good way to reduce
                         the dimension of our problem is to use <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding"
                             target="_blank">t-distributed stochastic neighbors embedding</a>, aka

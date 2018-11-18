@@ -66,16 +66,8 @@
       </div>
       <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
         <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
-        <a class="mdl-layout__tab is-active" id="blog_menu">Blog</a>
-        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="blog_menu">
-          <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_downloading_dataset', _external=True) }}' ">
-            Obtaining a Dataset </li>
-          <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_cleaning_dataset', _external=True) }}' ">
-            Cleaning the Dataset </li>
-          <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_training', _external=True) }}' ">
-            Training the Network</li>
-        </ul>
-      </div>
+        <a href="{{ url_for('blog', _external=True) }}" class="mdl-layout__tab">Blog</a>
+    </div>
     </header>
     <div class="demo-ribbon"></div>
     <main class="demo-main mdl-layout__content">
@@ -148,7 +140,8 @@
           <p>
             Downloading the images in a good step, but a quick look at your data may reveal an unpleasant surprise:
             downloaded pictures are noisy, e.g. incorrectly labelled, and the dataset needs a good cleanup! This will
-            be the <a href="{{ url_for('blog_cleaning_dataset', _external=True) }}" target="_blank">second post</a> of this project.
+            be the <a href="{{ url_for('blog_cleaning_dataset', _external=True) }}" target="_blank">second post</a> of
+            this project.
           </p>
         </div>
       </div>

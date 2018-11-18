@@ -24,6 +24,13 @@ def blog_cleaning_dataset():
 def blog_training():
     return render_template("blog_training.html")
 
+@app.route("/blog_deploying/")
+def blog_deploying():
+    return render_template("blog_deploying.html")
+
+@app.route("/blog/")
+def blog():
+    return render_template("blog.html")
 
 if __name__ == "__main__":
     app.run()

@@ -30,7 +30,7 @@
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <meta name="apple-mobile-web-app-title" content="LemurNet: Training the Network">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -66,15 +66,7 @@
             </div>
             <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
                 <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
-                <a class="mdl-layout__tab is-active" id="blog_menu">Blog</a>
-                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="blog_menu">
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_downloading_dataset', _external=True) }}' ">
-                        Obtaining a Dataset </li>
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_cleaning_dataset', _external=True) }}' ">
-                        Cleaning the Dataset </li>
-                    <li class="mdl-menu__item" onclick="location.href='{{ url_for('blog_training', _external=True) }}' ">
-                        Training the Network</li>
-                </ul>
+                <a href="{{ url_for('blog', _external=True) }}" class="mdl-layout__tab">Blog</a>
             </div>
         </header>
         <div class="demo-ribbon"></div>
@@ -86,7 +78,121 @@
                         LemurNet &gt; Blog &gt; Training the Network
                     </div>
                     <h2>Training the Network</h2>
-                    <h3>Coming Soon!</h3>
+                    <p>
+                        After <a href="{{ url_for('blog_downloading_dataset', _external=True) }}" target="_blank">downloading</a>
+                        and <a href="{{ url_for('blog_cleaning_dataset', _external=True) }}" target="_blank">cleaning</a>
+                        our dataset, we are now very much in the situation described in
+                        many tutorials. This is the fun part, where we build a neural network and train it!
+                    </p>
+                    <p>
+                        First, let's define what our target is, how we eventually want to decide if our network
+                        "works". We're in a classification problem, similar to MNIST or
+                        the ImageNet challenge, so a natural measure of performance is (top 1) accuracy, that is, the
+                        percentage of correct classifications when picking our most likely guess as our prediction.
+                        Given 35 balanced classes, the naive baseline acuracy is 2.85%. Needless to say, we expect to
+                        do much
+                        better! However, given that I am not a specialist of lemurs, I cannot guarantee that outliers
+                        don't remain in the validation dataset. If it is the case, even a perfect classifier would
+                        report a less-than-perfect accuracy, so the performance reported below is most likely a
+                        lower bound. Now, we must build our network.
+                    </p>
+                    <p>
+                        A first approach would be to define a neural network from scratch, say as a series of
+                        convolutional and max pooling layers <i>a la</i> AlexNet. However, such neural nets would
+                        quickly overfit the small number of images in our possession.
+                    </p>
+                    <p>
+                        The best approach for this problem is called transfer learning. In a nutshell, it consists in
+                        taking a large, high-performing model trained on ImageNet, and adjusting the final layers to
+                        our problem. The first layers, when trained on ImageNet, work as generic feature extractors, a
+                        property we already used to clean our dataset. Indeed, in the <a href="https://www.kaggle.com/c/dog-breed-identification"
+                            target="_blank">Kaggle challenge to identify dog breeds</a>, transfer learning proved the
+                        way to go. Our problem is conceptually similar, so we expect to be as successful!
+                    </p>
+                    <p>
+
+                        An excellent companion to transfer learning and fine-tuning with Keras is François Chollet's
+                        book <a href="https://www.manning.com/books/deep-learning-with-python" target="_blank">Deep
+                            Learning with Python</a>. You can have a look at the relevant Notebooks on <a href="https://github.com/fchollet/deep-learning-with-python-notebooks"
+                            target="_blank">the author's GitHub page</a>.
+                    </p>
+                    <p>
+                        First we obtain the MobileNetV2 network, pre-trained on ImageNet, without its top classifier:
+                        <script src="https://gist.github.com/pmdanton/0cbea59285cdd3732f31129751a2fba9.js"></script>
+                    </p>
+                    <p>
+                        We freeze all the layers of this convolutional base:
+                        <script src="https://gist.github.com/pmdanton/3f8b97480f03227338d6f4643b7433d6.js"></script>
+                    </p>
+                    <p>
+                        We build our own classifier on top of it, a fully connected layer with softmax activation.
+                        Because we're connecting 1280 features to 35 classes, the final layer has 44,835 parameters,
+                        for only ~15k images. Consequently, we'll insert a dropout layer with a large dropout rate
+                        before the softmax classifier to mitigate overfitting.
+                        <script src="https://gist.github.com/pmdanton/fea2244306237b5b3d90d4cd0d3e7db0.js"></script>
+                    </p>
+                    <p>
+                        We are ready to compile the model. Because we are in a classification problem, the natural loss
+                        function is categorical cross-entropy. We'll use the <a href="http://ruder.io/optimizing-gradient-descent/index.html#adam"
+                            target="_blank">Adam optimizer</a> and also calculate the
+                        accuracy of our network.
+                        <script src="https://gist.github.com/pmdanton/2b3d0f1ff40562a71f688089460f3c5a.js"></script>
+                        The summary shows the layers of our network, and the number of trainable parameters: 44,835 out
+                        of a total of 2,302,819 parameters, as expected.
+                    </p>
+                    <p>
+                        To complement our dropout layer, a powerful technique to reduce overfitting is data
+                        augmentation.
+                        For images, it typically means that rotations, shearing, zooming in or out, and horizontal
+                        flipping can be used to generate new images to train on. Keras makes it as easy as it gets with
+                        <a href="https://keras.io/preprocessing/image/" target="_blank">ImageDataGenerator</a>:
+                        <script src="https://gist.github.com/pmdanton/5ed49914930d59414dbfa680d99d3447.js"></script>
+                    </p>
+                    <p>
+                        Note that “flow_from_directory” expects the each class to have its own folder with
+                        corresponding pictures inside: this is precisely the structure of the dataset we obtained with
+                        google-images-download. Convenient!
+                    </p>
+                    <p>
+                        To monitor the training process, we introduce a number of callbacks:
+                        <script src="https://gist.github.com/pmdanton/2af410ab1a87f63a581c61967ef34aaa.js"></script>
+                        The TensorFlow backend (or tf.keras) is required to use <a href="https://www.tensorflow.org/guide/summaries_and_tensorboard"
+                            target="_blank">TensorBoard</a>. This callback is optional and can be safely removed if
+                        you're using the Theano or CNTK backend. And if you have no clue what I'm talking about, you're
+                        probably fine.
+                    </p>
+                    <p>
+                        Finally, it's time to train! Once done, we also restore the best weights found during training
+                        from the model checkpoint:
+                        <script src="https://gist.github.com/pmdanton/050eca4975fd4a1c4bb5bf4a0fdc9065.js"></script>
+                    </p>
+                    <p>
+                        We achieve a validation accuracy of 42%. This is not bad, but we can further improve it by
+                        fine-tuning the last two blocks of our convolutional base:
+                        <script src="https://gist.github.com/pmdanton/ff9e3e5641c1c7e9963c075b37590d94.js"></script>
+                    </p>
+                    <p>
+                        We now have 1,250,915 trainable parameters, so we're at very high risk of overfitting in spite
+                        of dropout and data augmentation. To mitigate this and preserve relevant pre-training, we will
+                        use a small learning rate, 100 times smaller than in our initial training, along with a larger
+                        reduction factor on plateau.
+                        <script src="https://gist.github.com/pmdanton/ba1ddfada5715074cd461945f909d5a8.js"></script>
+                        <script src="https://gist.github.com/pmdanton/02d7f3e6c9cbcc551c7ce020bf58db0b.js"></script>
+                    </p>
+                    <p>
+                        Training is the same as before. We still restore the best weights seen during training, and
+                        don't forget to save the entire network when done: LemurNet is complete!
+                        <script src="https://gist.github.com/pmdanton/3ff4dbd2b345c93ac22cb4589e9d6913.js"></script>
+                        The best validation accuracy is 49%, a nice 7% absolute increase. In practice, I found LemurNet
+                        to perform extremely well on my own pictures from Madagascar! As noted before, incorrect data
+                        may remain in my dataset, and I do believe the actual accuracy is higher that reported due to
+                        networks' ability to learn even on noisy data. I very much wish I had a better,
+                        professionally-annotated dataset to improve the perforance of LemurNet, but for now let's use
+                        what we have here: later improvement may come from iterating the cleaning process, using the
+                        trained network for feature extraction. The final
+                        step is to let other people use LemurNet with a webapp; this will be our <a href="{{ url_for('blog_deploying', _external=True) }}"
+                            , target="_blank">final blog post</a>.
+                    </p>
                 </div>
             </div>
         </main>
