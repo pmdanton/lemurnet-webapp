@@ -4,7 +4,6 @@ from flask_sslify import SSLify
 app = Flask(__name__)
 sslify = SSLify(app, permanent=True)
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
