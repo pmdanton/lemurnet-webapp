@@ -6,8 +6,15 @@ sslify = SSLify(app, permanent=True)
 
 @app.route("/")
 def index():
+    return render_template("background.html")
+
+@app.route("/lemurnet/")
+def lemurnet():
     return render_template("index.html")
 
+@app.route("/links/")
+def links():
+    return render_template("links.html")
 
 @app.route("/blog_downloading_dataset/")
 def blog_downloading_dataset():

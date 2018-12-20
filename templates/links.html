@@ -20,9 +20,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="A webapp to identify lemur species in pictures using deep learning">
+  <meta name="description" content="Background of LemurNet.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>Try LemurNet</title>
+  <title>Lemur and Deep Learning Links</title>
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -30,7 +30,7 @@
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="LemurNet">
+  <meta name="apple-mobile-web-app-title" content="Material Design Lite">
 
   <!-- Tile icon for Win8 (144x144 + tile color) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -55,7 +55,7 @@
       margin-bottom: 40px;
       z-index: 900;
     }
-    </style>
+  </style>
 </head>
 
 <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
@@ -71,30 +71,41 @@
         <a href="{{ url_for('links', _external=True) }}" class="mdl-layout__tab">Links</a>
       </div>
     </header>
-    <img src="{{ url_for('static', filename='catta.jpg') }}" id="cat" style="display: none" height="224" width="224"></img>
-    <main class="mdl-layout__content">
-      <div class="mdl-layout__tab-panel is-active" id="overview">
-        <section class="section--center mdl-grid" id="button_section" style="display: none">
-          <div class="md-cell--middle mdl-cell--12-col-desktop mdel-cell--8-col-tablet mdl-cell--4-col-phone">
-            <label class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="button" type="file" name="files[]"
-              multiple>
-              Try Another Picture
-              <input id="input_button" style="display: none" type="file" name="files[]" multiple></input>
-            </label>
-          </div>
-        </section>
-        <section id="loading">
-          <div>
-            <h4>Loading model...</h4>
-          </div>
-          <div class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-        </section>
+    <div class="demo-ribbon"></div>
+    <main class="demo-main mdl-layout__content">
+      <div class="demo-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+          <h2>Lemur and Deep Learning Links</h2>
+          <p>
+            On this page you will find a number of links to the websites of organizations working to learn more and
+            protect lemurs, as well as some references to deep learning materials, whether you came here for the animals or
+            the AI!
+          </p>
+          <p>
+            <a href="https://www.iucnredlist.org/">IUCN Red List of Threatened Species</a>
+          </p>
+          <p>
+            <a href="https://lemur.duke.edu/">Duke Lemur Center</a>
+          </p>
+          <p>
+            <a href="https://www.lemurreserve.org/">Lemur Conservation Foundation</a>
+          </p>
+          <p>
+            <a href="https://www.lemurconservationnetwork.org/about/">Lemur Conservation Network</a>
+          </p>
+          <p>
+            <a href="https://www.conservation.org/Pages/default.aspx">Conservation International</a>
+          </p>
+          <p>
+            <a href="https://keras.io/">Keras API Documentation</a>
+          </p>
+
+        </div>
       </div>
     </main>
   </div>
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.4"></script>
-  <script defer src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 
 </html>
