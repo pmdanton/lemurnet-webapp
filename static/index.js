@@ -129,12 +129,12 @@ const LEMURNET_CONSERVATION_STATUS = {
   34: 'Critically Endangered'
 };
 
-const MOBILENET_MODEL_PATH = 'static/model.json'
+//const MOBILENET_MODEL_PATH = '../static/model.json'
     // tslint:disable-next-line:max-line-length
     //$.post(url_for('static', filename='model.json'));
 
 const IMAGE_SIZE = 224;
-const TOPK_PREDICTIONS = 5;
+const TOPK_PREDICTIONS = 1;
 
 let mobilenet;
 const mobilenetDemo = async () => {
