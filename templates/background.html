@@ -89,22 +89,35 @@
           <p>
             Combining this with my interest in machine learning and deep learning, I decided to create a tool for the
             image-based identification of lemur species, with the hope
-            that it can serve an educational or preservation purpose, and raise awareness on the fate of the lemurs of
-            Madagascar. It was also a great opportunity to leverage my knowledge of deep learning, and so LemurNet was
+            that it can serve an educational or preservation purpose, and raise awareness of the fate of the lemurs of
+            Madagascar. It was also a great opportunity to conduct an end-to-end project and learn a lot from it, and
+            so LemurNet was
             born!
           </p>
           <p>
             On this website you can <a href="{{ url_for('lemurnet', _external=True) }}">try LemurNet</a>
-            to identify lemur spices from pictures, and read a <a href="{{ url_for('blog', _external=True) }}">step-by-step
+            to identify lemur species from pictures, and read a <a href="{{ url_for('blog', _external=True) }}">step-by-step
               guide</a>
             to
             implementing your own deep learning solution from scratch to webserving. The neural network runs directly
             inside the
-            browser, so no data will be collected by this website. You will also find useful <a href="{{ url_for('links', _external=True) }}">links</a>
+            browser, so no data will be collected by this website, but it can take up to a minute or so to load the
+            model. You will also find useful <a href="{{ url_for('links', _external=True) }}">links</a>
             to
             learn more about lemurs and some great NGOs that look after them.
           </p>
-
+          <p>
+            Last but not least, I am aware of the shortcomings of LemurNet that a larger, professionally-curated
+            dataset
+            would overcome (see the <a href="{{ url_for('blog', _external=True) }}">blog</a> for more details). In the
+            future, I will try to partner with a NGO or a
+            research center to make this tool more accurate and useful to all! The code for this website is open-sourced
+            on <a href="https://github.com/pmdanton/lemurnet-webapp">GitHub</a>, with Jupyter notebooks soon to be
+            added.
+          </p>
+          <p>
+            Enjoy LemurNet!
+          </p>
         </div>
       </div>
     </main>
