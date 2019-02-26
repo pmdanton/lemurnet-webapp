@@ -141,7 +141,7 @@ const mobilenetDemo = async () => {
   mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
 
   // Make a prediction through the locally hosted cat.jpg.
-  const catElement = document.getElementById('cat');
+  const catElement = document.getElementById('lemur_demo');
   if (catElement.complete && catElement.naturalHeight !== 0) {
     predict(catElement);
   } else {
