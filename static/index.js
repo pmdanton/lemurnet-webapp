@@ -138,7 +138,7 @@ const TOPK_PREDICTIONS = 1;
 
 let mobilenet;
 const mobilenetDemo = async () => {
-  mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
+  mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
 
   // Make a prediction through the locally hosted cat.jpg.
   const catElement = document.getElementById('cat');
@@ -159,7 +159,7 @@ async function predict(imgElement) {
   const startTime = performance.now();
   const logits = tf.tidy(() => {
     // tf.fromPixels() returns a Tensor from an image element.
-    const img = tf.fromPixels(imgElement).toFloat();
+    const img = tf.browser.fromPixels(imgElement).toFloat();
 
     const offset = tf.scalar(127.5);
     // Normalize the image from [0, 255] to [-1, 1].
