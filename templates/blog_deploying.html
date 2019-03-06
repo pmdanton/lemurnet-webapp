@@ -68,7 +68,7 @@
                 <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">About</a>
                 <a href="{{ url_for('lemurnet', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
                 <a href="{{ url_for('blog', _external=True) }}" class="mdl-layout__tab">Blog</a>
-                <a href="{{ url_for('links', _external=True) }}" class="mdl-layout__tab">Links</a>
+                <a href="{{ url_for('links', _external=True) }}" class="mdl-layout__tab">Resources</a>
             </div>
         </header>
         <div class="demo-ribbon"></div>
@@ -91,7 +91,7 @@
                         Here we'll create a simple webapp, leveraging <a href="https://js.tensorflow.org/" target="_blank">TensorFlow.js</a>
                         to perform client-side
                         inference. Indeed, most of the code we'll use is adapted from the <a href="https://github.com/tensorflow/tfjs-examples/tree/master/mobilenet"
-                            target="_blank">official mobilenet example</a>.
+                            target="_blank">official MobileNet example</a>.
                         provided by the tfjs team.
                     </p>
                     <p>
@@ -178,7 +178,7 @@
                     </p>
                     <p>
                         First we create a repository on GitHub: go to your dashboard and click "New". Everything should
-                        be pretty straightforward, and you can use use <a href="https://help.github.com/articles/create-a-repo/"
+                        be pretty straightforward, and you can use <a href="https://help.github.com/articles/create-a-repo/"
                             target="_blank">this page for help</a>. Let's say you called your repo "my_app". You'll
                         now push the folder on your machine (origin) to your remote repo (master):
                         <script src="https://gist.github.com/pmdanton/6c092e78dba8e413336b5f408d3f38dd.js"></script>
@@ -194,7 +194,7 @@
                         You should now have a working website! For LemurNet I upgraded Heroku to use a Hobby dyno that
                         never sleeps, and bought a domain name for the website (which is still accessible on <a href="https://lemurnet.herokuapp.com/"
                             target="_blank">lemurnet.herokuapp.com</a>). I also used <a href="https://github.com/kennethreitz/flask-sslify"
-                            target="_blank">Flask-SSLify</a> to redirect all trafic to HTTPS, so browsers like Chrome
+                            target="_blank">Flask-SSLify</a> to redirect all traffic to HTTPS, so browsers like Chrome
                         won't mark the website as unsafe.
                     </p>
                     <p>

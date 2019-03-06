@@ -68,7 +68,7 @@
                 <a href="{{ url_for('index', _external=True) }}" class="mdl-layout__tab">About</a>
                 <a href="{{ url_for('lemurnet', _external=True) }}" class="mdl-layout__tab">Try LemurNet</a>
                 <a href="{{ url_for('blog', _external=True) }}" class="mdl-layout__tab">Blog</a>
-                <a href="{{ url_for('links', _external=True) }}" class="mdl-layout__tab">Links</a>
+                <a href="{{ url_for('links', _external=True) }}" class="mdl-layout__tab">Resources</a>
             </div>
         </header>
         <div class="demo-ribbon"></div>
@@ -188,9 +188,9 @@
                         <script src="https://gist.github.com/pmdanton/3ff4dbd2b345c93ac22cb4589e9d6913.js"></script>
                         The best validation accuracy is 49%, a nice 7% absolute increase. In practice, I found LemurNet
                         to perform extremely well on my own pictures from Madagascar! As noted before, incorrect data
-                        may remain in my dataset, and I do believe the actual accuracy is higher that reported due to
+                        may remain in my dataset, and I do believe the actual accuracy is higher than reported due to
                         networks' ability to learn even on noisy data. I very much wish I had a better,
-                        professionally-annotated dataset to improve the perforance of LemurNet, but for now let's use
+                        professionally-annotated dataset to improve the performance of LemurNet, but for now let's use
                         what we have here: later improvement may come from iterating the cleaning process, using the
                         trained network for feature extraction. The final
                         step is to let other people use LemurNet with a webapp; this will be our <a href="{{ url_for('blog_deploying', _external=True) }}"
