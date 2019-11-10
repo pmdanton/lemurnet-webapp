@@ -20,12 +20,12 @@ const LEMURNET_CLASSES = {
   1: 'Cheirogaleus',
   2: 'Daubentonia Madagascariensis',
   3: 'Eulemur Abifrons',
-  4: 'Eulemur Cinereicceps',
+  4: 'Eulemur Cinereiceps',
   5: 'Eulemur Collaris',
   6: 'Eulemur Coronatus',
   7: 'Eulemur Flavifrons',
   8: 'Eulemur Fulvus',
-  9: 'Eulemur Macao',
+  9: 'Eulemur Macaco',
   10: 'Eulemur Mongoz',
   11: 'Eulemur Rubriventer',
   12: 'Eulemur Rufifrons',
@@ -129,16 +129,16 @@ const LEMURNET_CONSERVATION_STATUS = {
   34: 'Critically Endangered'
 };
 
-//const MOBILENET_MODEL_PATH = '../static/model.json'
+//const LEMURNET_MODEL_PATH = '../static/model.json'
     // tslint:disable-next-line:max-line-length
     //$.post(url_for('static', filename='model.json'));
 
 const IMAGE_SIZE = 224;
 const TOPK_PREDICTIONS = 1;
 
-let mobilenet;
-const mobilenetDemo = async () => {
-  mobilenet = await tf.loadLayersModel(MOBILENET_MODEL_PATH);
+let lemurnet;
+const lemurnetDemo = async () => {
+  lemurnet = await tf.loadLayersModel(LEMURNET_MODEL_PATH);
 
   // Make a prediction through the locally hosted cat.jpg.
   const catElement = document.getElementById('lemur_demo');
@@ -152,7 +152,7 @@ const mobilenetDemo = async () => {
 };
 
 /**
- * Given an image element, makes a prediction through mobilenet returning the
+ * Given an image element, makes a prediction through lemurnet returning the
  * probabilities of the top K classes.
  */
 async function predict(imgElement) {
@@ -168,8 +168,8 @@ async function predict(imgElement) {
     // Reshape to a single-element batch so we can pass it to predict.
     const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
 
-    // Make a prediction through mobilenet.
-    return mobilenet.predict(batched);
+    // Make a prediction through lemurnet.
+    return lemurnet.predict(batched);
   });
 
   // Convert logits to probabilities and class names.
@@ -306,4 +306,4 @@ const overview = document.getElementById("overview");
 
 const predictionsElement = document.getElementById('predictions');
 
-mobilenetDemo();
+lemurnetDemo();
