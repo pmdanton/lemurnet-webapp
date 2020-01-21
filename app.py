@@ -1,8 +1,13 @@
 from flask import Flask, render_template, url_for, request
-from flask_sslify import SSLify
+from flask_talisman import Talisman
 
 app = Flask(__name__)
-sslify = SSLify(app, permanent=True)
+csp = {
+    'default-src': ['\'self\'', 'data:', 'https://fonts.gstatic.com/', 
+    'https://code.getmdl.io', 'https://fonts.googleapis.com', 
+    '\'unsafe-inline\'', 'cdn.jsdelivr.net']    
+}
+Talisman(app, force_https_permanent=True, content_security_policy=csp)
 
 @app.route("/")
 def index():
