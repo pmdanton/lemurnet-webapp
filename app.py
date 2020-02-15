@@ -5,7 +5,8 @@ app = Flask(__name__)
 csp = {
     'default-src': ['\'self\'', 'data:', 'https://fonts.gstatic.com/', 
     'https://code.getmdl.io', 'https://fonts.googleapis.com', 
-    '\'unsafe-inline\'', 'cdn.jsdelivr.net']    
+    '\'unsafe-inline\'', 'cdn.jsdelivr.net', 'https://gist.github.com/',
+    'https://github.githubassets.com/']    
 }
 Talisman(app, force_https_permanent=True, content_security_policy=csp)
 
